@@ -13,6 +13,8 @@ using std::exit;
 using std::string;
 using namespace std;
 
+bool isKeyInDictionary(string, ifstream&);
+
 int main()
 {
     ifstream dictionaryInput("dictionary.dat", ios::in);
@@ -23,28 +25,35 @@ int main()
         exit(1);
     }
 
-    string searchKey, actualWord;
+    string searchKey;
     cout << "Enter the search key: ";
     cin >> searchKey;
-    bool foundKey = false;
 
-    while(dictionaryInput >> actualWord)
-        if (searchKey == actualWord)
+    if (isKeyInDictionary(searchKey, dictionaryInput))
+        cout << "The word you typed was correctly found in the dictionary!" << endl;
+    else
+        cout << "The word " << searchKey << " is not correct" << endl;
+}
+
+
+/*
+    Search a given key in the dictionary and returns true if the 
+    key was found.
+
+    @param key The string to be searched
+    @param dictionary The english dictionary(database)
+*/
+bool isKeyInDictionary(string key, ifstream& dictionary)
+{
+    dictionary.seekg(0);
+    string actualWord;
+    bool found = false;
+    while (dictionary >> actualWord)
+        if (key == actualWord)
         {
-            foundKey = true;
+            found = true;
             break;
         }
-    if (foundKey)
-        cout << "The word is correctly written" << endl;
-    else
-        cout << "The word" << searchKey << "is not correct" << endl;
-
-
-    
-       
-
-
-
-
+    return found;
 }
 
